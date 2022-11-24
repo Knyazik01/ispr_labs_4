@@ -93,5 +93,5 @@ def generate_final_message (percents_by_section, names)
 
   border_line = '-'*(max_message_len + 4) # border + spase
 
-  border_line + "\n" + messages.join("\n") + "\n" + border_line
+  border_line + "\n" + messages.join("\n") + "\n" + border_line + "\n"
 end
