@@ -60,3 +60,38 @@ def get_answers (questions_hash)
     get_answers questions_hash
   end
 end
+
+def check_temperament_type(percent)
+  if percent >= 40
+    'домінуючий'
+  elsif 30 <= percent && percent < 40
+    'виражений яскраво'
+  elsif 20 <= percent && percent < 30
+    'середній'
+  elsif 10 <= percent && percent < 20
+    'слабо вижений'
+  else
+    'виражений дуже слабо'
+  end
+end
+def generate_final_message (percents_by_section, names)
+  percent_len = (percents_by_section.max_by {|_key, value| value.to_s.length})[1].to_s.length
+  name_len = (names.max_by {|_key, name| name.length})[1].length
+
+  messages_array = percents_by_section
+  .entries
+  .sort { |entries1, entries2| entries2[1] <=> entries1[1] }
+  .map do |temperament, percent|
+    temperament_name = names[temperament].ljust(name_len)
+    percent_value = (percent.to_s + '%').rjust(percent_len + 1) # add '%' symbol
+    "Ви #{temperament_name} на #{percent_value} (#{check_temperament_type percent})"
+  end
+
+  max_message_len = messages_array.max { |a, b| a.length <=> b.length }.length
+
+  messages = messages_array.map { |line| '| ' + (line.ljust(max_message_len)) + ' |' }
+
+  border_line = '-'*(max_message_len + 4) # border + spase
+
+  border_line + "\n" + messages.join("\n") + "\n" + border_line
+end

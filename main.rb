@@ -38,21 +38,8 @@ temperament_names = {
 "section_4" => "меланхолік",
 }
 
-name_len = (temperament_names.max_by {|_key, name| name.length})[1].length
-percent_len = (percents.max_by {|_key, value| value.to_s.length})[1].to_s.length
+result = generate_final_message(percents, temperament_names)
 
-result = percents
-.entries
-.sort { |entries1, entries2| entries2[1] <=> entries1[1] }
-.map do |temperament, percent|
-  temperament_name = temperament_names[temperament].ljust(name_len)
-  percent_value = (percent.to_s + '%').rjust(percent_len + 1) # add '%' symbol
-  "Ви #{temperament_name} на #{percent_value}"
-end
-.join "\n"
-
-print "\n", '-----------------------------', "\n"
 print result
-print "\n", '-----------------------------', "\n"
 
 File.write("./result.txt", result)
